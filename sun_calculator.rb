@@ -63,8 +63,10 @@ class SolarCalculator
 
   def solar_mean_anomaly # Mearth
     # returns in degrees, 87.18
-    (357.5291 + 0.98560028 * (approximate_solar_noon - JULIAN_2000)) % 360
-    (357.5291 + 0.98560028 * (current_julian_date - JULIAN_2000)) % 360    
+    # Not sure if using approximate_solar_noon instead of current_julian_date is helpful or not
+    # Following this http://www.astro.uu.nl/~strous/AA/en/reken/zonpositie.html using current_julian_date
+#    (357.5291 + 0.98560028 * (approximate_solar_noon - JULIAN_2000)) % 360
+    (357.5291 + 0.98560028 * (current_julian_date - JULIAN_2000)) % 360
   end
 
   def equation_of_center # Cearth
@@ -98,7 +100,7 @@ class SolarCalculator
   end
 
   def sidereal_time # θ
-    280.1600 + 360.9856235 * (current_julian_date - JULIAN_2000)
+    (280.1600 + 360.9856235 * (current_julian_date - JULIAN_2000) - longitude) % 360
   end
 
 
