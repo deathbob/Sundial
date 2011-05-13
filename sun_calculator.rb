@@ -64,6 +64,7 @@ class SolarCalculator
   def solar_mean_anomaly # Mearth
     # returns in degrees, 87.18
     (357.5291 + 0.98560028 * (approximate_solar_noon - JULIAN_2000)) % 360
+    (357.5291 + 0.98560028 * (current_julian_date - JULIAN_2000)) % 360    
   end
 
   def equation_of_center # Cearth
@@ -95,6 +96,11 @@ class SolarCalculator
     #Math.atan(Math.sin(ecliptic_longitude) +
     ecliptic_longitude + (-2.4680 * Math.sin((2 * ecliptic_longitude).degrees)) + (0.0530 * Math.sin((4 * ecliptic_longitude).degrees))  - (0.0014 * Math.sin((6 * ecliptic_longitude).degrees))
   end
+
+  def sidereal_time # θ
+    280.1600 + 360.9856235 * (current_julian_date - JULIAN_2000)
+  end
+
 
   def hour_angle_two
     Math.sin(latitude)
