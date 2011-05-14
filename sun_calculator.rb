@@ -60,8 +60,8 @@ class SolarCalculator
     # returns in degrees, 87.18
     # Not sure if using approximate_solar_noon instead of current_julian_date is helpful or not
     # Following this http://www.astro.uu.nl/~strous/AA/en/reken/zonpositie.html using current_julian_date
-#    ((357.5291 + 0.98560028 * (approximate_solar_noon - JULIAN_2000)) % 360).round(4)
-    ((357.5291 + 0.98560028 * (current_julian_date - JULIAN_2000)) % 360).round(4)
+    ((357.5291 + 0.98560028 * (approximate_solar_noon - JULIAN_2000)) % 360).round(4) # this one is how wikipedia has it
+#    ((357.5291 + 0.98560028 * (current_julian_date - JULIAN_2000)) % 360).round(4) # this on better for netherlands
   end
 
   def equation_of_center # Cearth
