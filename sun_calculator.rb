@@ -15,7 +15,7 @@ class SolarCalculator
   require 'activesupport'
 
   JULIAN_2000 = 2451545
-  attr_accessor :address
+  attr_accessor :address, :date
 
   def whatismyip
     "http://www.whatismyip.com/automation/n09230945.asp"
@@ -34,29 +34,27 @@ class SolarCalculator
 
   def current_julian_date
     # http://stackoverflow.com/questions/5095456/using-the-ruby-date-class-for-astronomical-data
-#    Date.today.ajd.to_f
-    2453097
+    @date || Date.today.jd
   end
 
   def longitude
-#    lat_long.lng
-    -5.0
+    lat_long.lng
+#    5.0
   end
 
   def latitude
-#    lat_long.lat
-    52.0
+    lat_long.lat
+#    52
   end
 
-
+  def jrd
+    current_julian_date - JULIAN_2000
+  end
 
   def current_julian_cycle
-    (current_julian_date - JULIAN_2000 - 0.0009 - (longitude / 360.0)).round
+    (current_julian_date - JULIAN_2000 - 0.0009 - (-longitude / 360.0)).round
   end
 
-  def approximate_solar_noon
-    (JULIAN_2000 + 0.0009 + (longitude / 360.0) + current_julian_cycle).round(4)
-  end
 
   def solar_mean_anomaly # Mearth
     # returns in degrees, 87.18
@@ -80,13 +78,17 @@ class SolarCalculator
   def obliquity_of_the_equator #  ε
     23.45
   end
-  
+
   def l_sun
     (solar_mean_anomaly + 102.9372 + 180) % 180
   end
-  
+
   def sunset_jd_two
     jpp + 0.0053 * Math.sin(solar_mean_anomaly.degrees) - 0.0069 * Math.sin((2 * l_sun).degrees)
+  end
+
+  def approximate_solar_noon # J(*)
+    (JULIAN_2000 + 0.0009 + (-longitude / 360.0) + current_julian_cycle).round(4)
   end
 
   def solar_transit
@@ -109,7 +111,7 @@ class SolarCalculator
   end
 
   def sidereal_time # θ
-    ((280.1600 + 360.9856235 * (current_julian_date - JULIAN_2000) - longitude) % 360).round(4)
+    (((280.1600 + 360.9856235 * (current_julian_date - JULIAN_2000)) - (-longitude)) % 360).round(4)
   end
 
   def hour_angle_two
@@ -130,12 +132,13 @@ class SolarCalculator
   end
 
   def jpp
-    JULIAN_2000 + 0.0009 + ((hour_angle + longitude) / 360.0)
+    JULIAN_2000 + 0.0009 + (hour_angle + (-longitude)) * 1 / 360.0 + 1 * current_julian_cycle
   end
 
   def sunset_jd
-    puts "#{JULIAN_2000} + 0.0009 + (((#{hour_angle} + #{longitude}) / 360.0 ) + #{current_julian_cycle} + 0.0053 * Math.sin(#{solar_mean_anomaly})) - 0.0069 * Math.sin(2 * #{ecliptic_longitude})"
-    foo = JULIAN_2000 + 0.0009 + (((hour_angle + longitude) / 360.0 ) + current_julian_cycle + 0.0053 * Math.sin(solar_mean_anomaly)) - 0.0069 * Math.sin(2 * ecliptic_longitude)
+#    puts "#{JULIAN_2000} + 0.0009 + (((#{hour_angle} + #{longitude}) / 360.0 ) + #{current_julian_cycle} + 0.0053 * Math.sin(#{solar_mean_anomaly})) - 0.0069 * Math.sin(2 * #{ecliptic_longitude})"
+#    foo = JULIAN_2000 + 0.0009 + (((hour_angle + longitude) / 360.0 ) + current_julian_cycle + 0.0053 * Math.sin(solar_mean_anomaly)) - 0.0069 * Math.sin(2 * ecliptic_longitude)
+    foo = jpp + 0.0053 * Math.sin(solar_mean_anomaly) - 0.0069 * Math.sin(2 * ecliptic_longitude)
     foo.round(4)
   end
 
@@ -145,16 +148,25 @@ class SolarCalculator
   end
 
   def sunset
-    foo = (DateTime.jd(sunset_jd) + 12.hours)
+    foo = DateTime.jd(sunset_jd)# + 12.hours
 #    foo = foo.new_offset(local_time.offset)
     foo
   end
 
   def sunrise
-    foo = (DateTime.jd(sunrise_jd) + 12.hours)
+    foo = DateTime.jd(sunrise_jd)# + 12.hours
 #    foo = foo.new_offset(local_time.offset)
     foo
   end
+
+  def sunrise_f
+    sunrise.strftime("%B %e %Y %T")
+  end
+
+  def sunset_f
+    sunset.strftime("%B %e %Y %T")
+  end
+
 
   def local_time
     DateTime.now

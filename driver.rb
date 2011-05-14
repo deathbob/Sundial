@@ -9,15 +9,22 @@ def printer(str)
 end
 
 #
-# @s.address = "201 West Broad Street, Richmond, VA"
-# @s.address = @s.external_ip
-# puts "lat_long", @s.lat_long
+@s.address = "201 West Broad Street, Richmond, VA"
+#@s.date = (Date.today + 110.days + 1.year).jd
+#@s.address = "Amsterdam, Netherlands"
+#@s.date = Date.parse("2004-04-01").jd
 
+#@s.address = @s.external_ip
+#puts "lat_long", @s.lat_long
+
+printer "  latitude "
+printer ' longitude '
 
 puts "Driver Block One ----------------------"
-printer "  current_julian_cycle "
 printer "   current_julian_date "
-printer "approximate_solar_noon "
+print   "           JULIAN_2000 ", "2451545", "\n"
+printer '                  jrd     '
+printer "  current_julian_cycle "
 printer '    solar_mean_anomaly '
 printer "    equation_of_center "
 printer "    ecliptic_longitude "
@@ -26,18 +33,22 @@ printer "declination_of_the_sun "
 puts
 
 puts "Driver Block Two ----------------------"
-printer "         l_sun "
-printer "           jpp "
-printer " sunset_jd_two "
+printer "                 l_sun "
+printer "                   jpp "
+printer "         sunset_jd_two "
 puts
 
 puts "Driver Block Three ----------------------"
-printer " sidereal_time "
-printer "    hour_angle "
-printer " solar_transit "
+printer "         sidereal_time "
+printer "            hour_angle "
+printer "approximate_solar_noon "
+printer "         solar_transit "
+puts
+
+puts "Driver Block Four"
 printer '    sunrise_jd '
 printer "     sunset_jd "
-puts
 printer "   sunrise "
 printer "    sunset "
-
+printer " sunrise_f "
+printer "  sunset_f "
