@@ -10,15 +10,18 @@ end
 
 #
 @s.address = "201 West Broad Street, Richmond, VA"
+#@s.address = "6526 Stuart Ave, Richmond, VA, 23226"
 #@s.date = (Date.today + 110.days + 1.year).jd
+
 #@s.address = "Amsterdam, Netherlands"
-#@s.date = Date.parse("2004-04-01").jd
+@s.date = Date.parse("2004-04-01").jd
 
 #@s.address = @s.external_ip
 #puts "lat_long", @s.lat_long
 
 printer "  latitude "
 printer ' longitude '
+printer ' longitude_west '
 
 puts "Driver Block One ----------------------"
 printer "   current_julian_date "
@@ -41,14 +44,18 @@ puts
 puts "Driver Block Three ----------------------"
 printer "         sidereal_time "
 printer "            hour_angle "
+printer "        hour_angle_two "
 printer "approximate_solar_noon "
 printer "         solar_transit "
 puts
 
 puts "Driver Block Four"
+printer '      wiki_set '
 printer '    sunrise_jd '
 printer "     sunset_jd "
 printer "   sunrise "
 printer "    sunset "
 printer " sunrise_f "
 printer "  sunset_f "
+printer ' length_of_day '
+printer ' asn_date '
