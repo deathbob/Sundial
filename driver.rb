@@ -9,19 +9,22 @@ def printer(str)
 end
 
 #
-@s.address = "201 West Broad Street, Richmond, VA"
+#@s.address = "201 West Broad Street, Richmond, VA"
 #@s.address = "6526 Stuart Ave, Richmond, VA, 23226"
 #@s.date = (Date.today + 110.days + 1.year).jd
 
 #@s.address = "Amsterdam, Netherlands"
-@s.date = Date.parse("2004-04-01").jd
+@s.address = @s.external_ip
+#@s.date = Date.parse("2004-04-01").jd
 
-#@s.address = @s.external_ip
+
 #puts "lat_long", @s.lat_long
 
 printer "  latitude "
 printer ' longitude '
 printer ' longitude_west '
+#printer ' get_offset '
+printer 'get_timezone_offset '
 
 puts "Driver Block One ----------------------"
 printer "   current_julian_date "
@@ -59,3 +62,8 @@ printer " sunrise_f "
 printer "  sunset_f "
 printer ' length_of_day '
 printer ' asn_date '
+
+
+
+
+# Looks like the times are good, need to grab the timezone of the address being used and offset the UTC results by that much

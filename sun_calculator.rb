@@ -13,15 +13,22 @@ class SolarCalculator
   require 'geokit'
   require 'open-uri'
   require 'activesupport'
+  require 'json'
 
   JULIAN_2000 = 2451545
-  attr_accessor :address, :date
+  attr_accessor :address, :date, :ip, :offset
 
   def whatismyip
-    "http://www.whatismyip.com/automation/n09230945.asp"
+#    "http://www.whatismyip.com/automation/n09230945.asp"
+# also see
+    "http://showip.codebrainz.ca/"
+#    "http://automation.whatismyip.com/n09230945.asp"
   end
+
   def external_ip
-    open(whatismyip).read
+    @ip = open(whatismyip).read
+    puts @ip
+    @ip
   end
 
   def lat_long
@@ -47,7 +54,25 @@ class SolarCalculator
 
   def latitude
     lat_long.lat
-   end
+  end
+
+  def get_offset
+    # see also http://www.hostip.info/
+    foo = open("http://www.earthtools.org/timezone-1.1/#{latitude}/#{longitude}").read
+#    puts foo
+    bar = foo.match(/<offset>(.*)<\/offset>/) if foo
+    @offset = bar[1] if bar
+  end
+
+  def get_timezone_offset
+    foo = open("http://www.askgeo.com/api/123016/vgdgoafgkvgdk6i9j26unjep4/timezone.json?points=#{latitude}%2C#{longitude}").read
+    bar = JSON.parse(foo)
+#    puts bar.inspect
+    if bar && bar['message'] == 'ok'
+      @offset = bar['data'].first['currentOffsetMs'].to_i / 3600000
+#      bar['data']['currentOffsetMs'].to_i / 3600000
+    end
+  end
 
   def jrd
     current_julian_date - JULIAN_2000
@@ -169,11 +194,11 @@ class SolarCalculator
   end
 
   def sunrise_f
-    sunrise.strftime("%B %e %Y %T")
+    (sunrise + @offset.to_i.hours).strftime("%B %e %Y %T")
   end
 
   def sunset_f
-    sunset.strftime("%B %e %Y %T")
+    (sunset + @offset.to_i.hours).strftime("%B %e %Y %T")
   end
 
   def length_of_day
