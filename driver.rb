@@ -16,6 +16,7 @@ end
 #@s.address = "Amsterdam, Netherlands"
 @s.address = @s.external_ip
 #@s.date = Date.parse("2004-04-01").jd
+#@s.date = Date.parse("2011-12-24").jd
 
 
 #puts "lat_long", @s.lat_long
@@ -62,6 +63,13 @@ printer " sunrise_f "
 printer "  sunset_f "
 printer ' length_of_day '
 printer ' asn_date '
+
+def format_datetime(dt)
+  dt.strftime("%B %e %Y %T")
+end
+
+puts format_datetime(@s.nine)
+puts format_datetime(@s.five)
 
 
 

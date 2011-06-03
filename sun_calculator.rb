@@ -194,15 +194,31 @@ class SolarCalculator
   end
 
   def sunrise_f
-    (sunrise + @offset.to_i.hours).strftime("%B %e %Y %T")
+    (sunrise + @offset.to_i.hours)
   end
 
   def sunset_f
-    (sunset + @offset.to_i.hours).strftime("%B %e %Y %T")
+    (sunset + @offset.to_i.hours)
   end
 
   def length_of_day
     (sunset - sunrise) * 24
+  end
+
+  def hour_ratio
+    length_of_day / 12.0
+  end
+
+  def nine
+    sunrise_f + (2 * hour_ratio).hours
+  end
+
+  def five
+    sunrise_f + (10 * hour_ratio).hours
+  end
+
+  def format_datetime(dt)
+    dt.strftime("%B %e %Y %T")
   end
 
 
