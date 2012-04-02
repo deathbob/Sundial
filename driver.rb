@@ -1,4 +1,4 @@
-require 'sun_calculator'
+require './lib/sun_calculator.rb'
 puts
 puts
 
@@ -68,8 +68,8 @@ def format_datetime(dt)
   dt.strftime("%B %e %Y %T")
 end
 
-puts format_datetime(@s.nine)
-puts format_datetime(@s.five)
+puts "the equivalent of 9 AM on the solstice on this day would be", format_datetime(@s.nine)
+puts "the equivalent of 5 pm on the solstice on this day would be", format_datetime(@s.five)
 
 
 

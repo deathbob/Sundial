@@ -1,76 +1,74 @@
-class Numeric
-  def degrees
-    self * Math::PI / 180
-  end
-  def radians
-    self * 180 / Math::PI
-  end
-end
+require 'rubygems'
+require 'date'
+require 'geokit'
+require 'open-uri'
+require 'json'
+
+require 'active_support/time'
+#require File.join(File.dirname(__FILE__), 'numeric_extensions.rb')
+require_relative 'numeric_extensions'
 
 class SolarCalculator
-  require 'rubygems'
-  require 'date'
-  require 'geokit'
-  require 'open-uri'
-  require 'activesupport'
-  require 'json'
+
+  attr_accessor :address, :date, :ip, :offset, :ll
+  
+  def initialize
+    @address = "Richmond, Virginia"
+  end
 
   JULIAN_2000 = 2451545
-  attr_accessor :address, :date, :ip, :offset
-
+  
+  def local_time
+    DateTime.now
+  end
+  
   def whatismyip
-#    "http://www.whatismyip.com/automation/n09230945.asp"
-# also see
-    "http://showip.codebrainz.ca/"
-#    "http://automation.whatismyip.com/n09230945.asp"
+    "http://www.whatismyip.org/"
   end
-
-  def external_ip
-    @ip = open(whatismyip).read
-    puts @ip
-    @ip
-  end
-
-  def lat_long
-    @ll ||= Geokit::Geocoders::MultiGeocoder.geocode(@address)
-#    @ll = Geokit::Geocoders::YahooGeocoder.geocode(@address)
-  end
-
-
-
 
   def current_julian_date
     # http://stackoverflow.com/questions/5095456/using-the-ruby-date-class-for-astronomical-data
     @date || Date.today.jd
   end
 
-  def longitude
-    lat_long.lng
+  def external_ip
+    @ip ||= open(whatismyip).read
+    @ip
+#    '75.75.82.80'        
   end
 
-  def longitude_west
-    -longitude
+  def lat_long
+    @ll ||= Geokit::Geocoders::MultiGeocoder.geocode(@address)
+  end
+
+  def longitude
+    lat_long.lng
   end
 
   def latitude
     lat_long.lat
   end
 
+  def longitude_west
+    -longitude
+  end
+
+
+
   def get_offset
     # see also http://www.hostip.info/
     foo = open("http://www.earthtools.org/timezone-1.1/#{latitude}/#{longitude}").read
-#    puts foo
     bar = foo.match(/<offset>(.*)<\/offset>/) if foo
-    @offset = bar[1] if bar
+    if bar
+      @offset = bar[1].to_i
+    end
   end
 
   def get_timezone_offset
     foo = open("http://www.askgeo.com/api/123016/vgdgoafgkvgdk6i9j26unjep4/timezone.json?points=#{latitude}%2C#{longitude}").read
     bar = JSON.parse(foo)
-#    puts bar.inspect
     if bar && bar['message'] == 'ok'
       @offset = bar['data'].first['currentOffsetMs'].to_i / 3600000
-#      bar['data']['currentOffsetMs'].to_i / 3600000
     end
   end
 
@@ -222,9 +220,7 @@ class SolarCalculator
   end
 
 
-  def local_time
-    DateTime.now
-  end
+
 
 
 end
