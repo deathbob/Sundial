@@ -1,0 +1,23 @@
+sun = Sundial.new
+
+# We use your address to find the latitude and longitude, which are necessary to make an accurate forecast for your location. (or whatever location).
+
+sun.address = YOUR ADDRESS HERE
+
+sun.address = 127.0.0.1 # Since we pass the address to Geokit, it can be any fragment of an address, or an IP.
+
+sun.get_timezone_offset # This will call out to the internet to get your offset from GMT
+# or set it by hand.
+# Again, it's necessary to know the time offset for your coordinates in order to make a accurate forecast.
+sun.offset = -5 # hours off GMT.
+
+puts "Sunrise", sun.sunrise_f
+puts "Sunset", sun.sunset_f
+
+
+
+
+TODO
+
+Get everything under test, and remove dependency on Activesupport. (It's just there to add and subtract hours from dates.)
+
