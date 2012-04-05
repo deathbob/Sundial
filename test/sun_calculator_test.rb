@@ -1,14 +1,14 @@
 require 'minitest/autorun'
 
-cal = File.join(File.dirname(__FILE__), '..', 'lib', 'sun_calculator.rb')
+cal = File.join(File.dirname(__FILE__), '..', 'lib', 'sundial.rb')
 
 puts File.exists? cal
 
-require_relative File.join('..', 'lib', 'sun_calculator')
+require_relative File.join('..', 'lib', 'sundial')
 
 class SunCalculatorTest < MiniTest::Unit::TestCase
   def setup
-    @sc = SolarCalculator.new
+    @sc = Sundial.new
   end
 
   def test_local_time
@@ -16,16 +16,16 @@ class SunCalculatorTest < MiniTest::Unit::TestCase
   end
   
   def test_julian_2000
-    assert   SolarCalculator::JULIAN_2000 == 2451545
+    assert   Sundial::JULIAN_2000 == 2451545
   end
   
   def test_whatismyip 
     assert @sc.whatismyip == "http://www.whatismyip.org/"
   end
 
-  describe SolarCalculator do
+  describe Sundial do
     before do
-      @sc = SolarCalculator.new
+      @sc = Sundial.new
     end
 
     describe 'current_julian_date' do
@@ -91,7 +91,7 @@ class SunCalculatorTest < MiniTest::Unit::TestCase
     
     describe 'jrd' do
       it 'should be the current_julian_date - JULIAN_2000' do
-        @sc.jrd.must_equal @sc.current_julian_date - SolarCalculator::JULIAN_2000
+        @sc.jrd.must_equal @sc.current_julian_date - Sundial::JULIAN_2000
       end
     end
     

@@ -8,7 +8,7 @@ require 'active_support/time'
 #require File.join(File.dirname(__FILE__), 'numeric_extensions.rb')
 require_relative 'numeric_extensions'
 
-class SolarCalculator
+class Sundial
 
   attr_accessor :address, :date, :ip, :offset, :ll
   
@@ -227,4 +227,4 @@ end
 
 
 
-#SolarCalculator.new.get_location
+#Sundial.new.get_location

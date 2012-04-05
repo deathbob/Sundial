@@ -1,8 +1,8 @@
-require './lib/sun_calculator.rb'
+require './lib/sundial'
 puts
 puts
 
-@s = SolarCalculator.new
+@s = Sundial.new
 
 def printer(str)
   print str, @s.send(str.strip.intern), "\n"
