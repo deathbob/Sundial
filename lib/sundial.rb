@@ -1,11 +1,9 @@
-require 'rubygems'
 require 'date'
 require 'geokit'
 require 'open-uri'
 require 'json'
-
 require 'active_support/time'
-#require File.join(File.dirname(__FILE__), 'numeric_extensions.rb')
+
 require_relative 'numeric_extensions'
 
 class Sundial
