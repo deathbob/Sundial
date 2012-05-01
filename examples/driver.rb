@@ -11,7 +11,8 @@ end
 #
 #@s.address = "201 West Broad Street, Richmond, VA"
 #@s.address = "6526 Stuart Ave, Richmond, VA, 23226"
-#@s.date = (Date.today + 110.days + 1.year).jd
+#@s.date = (Date.today + 200.days).jd
+#@s.date = (Date.today - 55.days).jd
 
 #@s.address = "Amsterdam, Netherlands"
 @s.address = @s.external_ip
@@ -68,8 +69,8 @@ def format_datetime(dt)
   dt.strftime("%B %e %Y %T")
 end
 
-puts "the equivalent of 9 AM on the solstice on this day would be", format_datetime(@s.nine)
-puts "the equivalent of 5 pm on the solstice on this day would be", format_datetime(@s.five)
+puts "the equivalent of 9 AM on the equinox on this day would be", format_datetime(@s.nine)
+puts "the equivalent of 5 pm on the equinox on this day would be", format_datetime(@s.five)
 
 
 

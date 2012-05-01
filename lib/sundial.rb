@@ -21,7 +21,7 @@ class Sundial
   end
   
   def whatismyip
-    "http://www.whatismyip.org/"
+    "http://checkip.dyndns.org"
   end
 
   def current_julian_date
@@ -30,7 +30,7 @@ class Sundial
   end
 
   def external_ip
-    @ip ||= open(whatismyip).read
+    @ip ||= open(whatismyip).read[/[\d\.]+/]
     @ip
 #    '75.75.82.80'        
   end
